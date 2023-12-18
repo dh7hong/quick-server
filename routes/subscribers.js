@@ -12,8 +12,13 @@ router.get("/", async (req, res) => {
   }
 });
 // Getting one
-router.get("/:id", getSubscriber, (req, res) => {
-  res.send(res.subscriber);
+router.get("/:id", getSubscriber, async (req, res) => {
+  try {
+    const subscriber = await Subscriber.findById(req.params.id);
+    res.json(subscriber);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 // Creating one
 router.post("/", async (req, res) => {
